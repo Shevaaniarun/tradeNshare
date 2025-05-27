@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeNShare</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        html, body {
+            font-size: xx-large;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-image: url("images/Home.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Navigation styling */
+        nav {
+            font-size: xx-large;
+            display: flex;
+            gap: 90px;
+            background: rgba(10, 10, 10, 0.8); /* Slight transparency */
+            padding: 15px 30px;
+            position: absolute;
+            bottom: -100px; /* Start off-screen */
+            left: 50%;
+            transform: translateX(30%);
+            animation: moveUp 1s ease-out forwards; /* Animation applied */
+        }
+
+        /* Navigation Links */
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-size: 20px;
+            padding: 10px 25px;
+            background: black;
+            border-radius: 5px;
+            transition: 0.3s;
+            border: 2px solid whitesmoke; /* White border around buttons */
+        }
+
+        nav a:hover {
+            background: #555;
+            border-color: #ccc; /* Lighter border on hover */
+        }
+
+        footer{
+            position: absolute;
+            bottom: 0.1px;
+            text-align: center;
+            color: white;
+            font-size: 16px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Keyframe animation to move up */
+        @keyframes moveUp {
+            from {
+                bottom: -100px;
+                opacity: 0;
+            }
+            to {
+                bottom: 200px; /* Final position */
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="/auth/login">Login</a>
+        <a href="/auth/signup">Signup</a>
+    </nav>
+    
+    <footer>
+        <span style="margin: 10px">© 2025 TradeNShare. All rights reserved</span>| 
+        <span style="margin: 10px">Contact us: <a href="mailto:tradeNshare@mail.com" style="color: #ccc; text-decoration: underline;">Tradenshare@mail.com</a></span>|
+            <a href="/terms.pdf" type="image/png" style="color: #ccc; margin: 10px; text-decoration: underline;">Terms & Conditions</a>
+        </p>
+    </footer>
+
+</body>
+</html>

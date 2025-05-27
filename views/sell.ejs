@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell - TradeNShare</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: #ffffff;
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 20px;
+            background-color: black;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Form Styling */
+        .form-group {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+
+        input, 
+        textarea, 
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, 
+        textarea:focus, 
+        select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0px 0px 5px rgba(52, 152, 219, 0.5);
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        /* Radio Button Styling */
+        .form-group div {
+            margin-bottom: 10px;
+        }
+
+        .form-group input[type="radio"] {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .form-group label {
+            display: inline-block;
+            font-weight: normal;
+            color: #2c3e50;
+        }
+
+        /* Sale Option Fields Styling */
+        .sale-option-fields {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .sale-option-fields.active {
+            display: block;
+        }
+
+        /* Button Styling */
+        button {
+            background: black;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #333;
+        }
+
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sell an Item</h1>
+        <form id="sellForm" action="/sell" method="POST" enctype="multipart/form-data">
+
+            <!-- Item Details -->
+            <div class="form-group">
+                <label for="name">Item Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="shortdescription">Short Description:</label>
+                <input type="text" id="shortdescription" name="shortdescription" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Full Description:</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="search_tags">Search tags:</label>
+                <textarea id="search_tags" name="search_tags" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="units">Units:</label>
+                <input type="number" id="units" name="units" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <input type="text" id="category" name="category" required>
+            </div>
+
+            <div class="form-group">
+                <label for="item_condition">Condition:</label>
+                <select id="item_condition" name="item_condition" required>
+                    <option value="New">New</option>
+                    <option value="Used">Used</option>
+                    <option value="Refurbished">Refurbished</option>
+                </select>
+            </div>
+
+            <!-- Sale Options -->
+            <div class="form-group">
+                <label>Sale Type:</label>
+                <div>
+                    <input type="radio" id="fixedPrice" name="saleType" value="fixedPrice" required>
+                    <label for="fixedPrice">Fixed Price</label>
+                </div>
+                <div>
+                    <input type="radio" id="auction" name="saleType" value="auction">
+                    <label for="auction">Auction</label>
+                </div>
+                <div>
+                    <input type="radio" id="lending" name="saleType" value="lending">
+                    <label for="lending">Lending</label>
+                </div>
+                <div>
+                    <input type="radio" id="lendingAuction" name="saleType" value="lendingAuction">
+                    <label for="lendingAuction">Lending Auction</label>
+                </div>
+            </div>
+
+            <!-- Fixed Price Fields -->
+            <div id="fixedPriceFields" class="sale-option-fields">
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="number" id="price" name="price" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="fixedPriceDescription">Description:</label>
+                    <textarea id="fixedPriceDescription" name="fixedPriceDescription" rows="4"></textarea>
+                </div>
+            </div>
+
+            <!-- Auction Fields -->
+            <div id="auctionFields" class="sale-option-fields">
+                <div class="form-group">
+                    <label for="basePrice">Base Price:</label>
+                    <input type="number" id="basePrice" name="basePrice" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="auctionDescription">Description:</label>
+                    <textarea id="auctionDescription" name="auctionDescription" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="startDate">Start Date:</label>
+                    <input type="datetime-local" id="startDate" name="startDate">
+                </div>
+                <div class="form-group">
+                    <label for="endDate">End Date:</label>
+                    <input type="datetime-local" id="endDate" name="endDate">
+                </div>
+            </div>
+
+            <!-- Lending Fields -->
+            <div id="lendingFields" class="sale-option-fields">
+                <div class="form-group">
+                    <label for="lendingPrice">Price:</label>
+                    <input type="number" id="lendingPrice" name="lendingPrice" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="lendingDescription">Description:</label>
+                    <textarea id="lendingDescription" name="lendingDescription" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="durationDays">Duration (Days):</label>
+                    <input type="number" id="durationDays" name="durationDays">
+                </div>
+            </div>
+
+            <!-- Lending Auction Fields -->
+            <div id="lendingAuctionFields" class="sale-option-fields">
+                <div class="form-group">
+                    <label for="lendingAuctionDescription">Description:</label>
+                    <textarea id="lendingAuctionDescription" name="lendingAuctionDescription" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="lendingAuctionPrice">Base Price:</label>
+                    <input type="number" id="lendingAuctionPrice" name="lendingAuctionPrice" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="lendingAuctionDuration">Duration (Days):</label>
+                    <input type="number" id="lendingAuctionDuration" name="lendingAuctionDuration">
+                </div>
+                <div class="form-group">
+                    <label for="lendingAuctionStartDate">Start Date:</label>
+                    <input type="datetime-local" id="lendingAuctionStartDate" name="lendingAuctionStartDate">
+                </div>
+                <div class="form-group">
+                    <label for="lendingAuctionEndDate">End Date:</label>
+                    <input type="datetime-local" id="lendingAuctionEndDate" name="lendingAuctionEndDate">
+                </div>
+            </div>
+            
+            <input type="file" id="item_photo" name="item_photo" accept="image/*" required>
+            <hr>
+            <!-- Submit Button -->
+            <button type="submit">List Item</button>
+        </form>
+        <div id="imagePreview"></div>
+    </div>   
+    
+</body>
+<script>
+    // JavaScript to toggle visibility of sale type fields
+    document.addEventListener('DOMContentLoaded', function () {
+        const saleTypeRadios = document.querySelectorAll('input[name="saleType"]');
+        const fixedPriceFields = document.getElementById('fixedPriceFields');
+        const auctionFields = document.getElementById('auctionFields');
+        const lendingFields = document.getElementById('lendingFields');
+        const lendingAuctionFields = document.getElementById('lendingAuctionFields');
+
+        saleTypeRadios.forEach(radio => {
+            radio.addEventListener('change', function () {
+                // Hide all fields initially
+                fixedPriceFields.classList.remove('active');
+                auctionFields.classList.remove('active');
+                lendingFields.classList.remove('active');
+                lendingAuctionFields.classList.remove('active');
+
+                // Show the selected fields
+                if (this.value === 'fixedPrice') {
+                    fixedPriceFields.classList.add('active');
+                } else if (this.value === 'auction') {
+                    auctionFields.classList.add('active');
+                } else if (this.value === 'lending') {
+                    lendingFields.classList.add('active');
+                } else if (this.value === 'lendingAuction') {
+                    lendingAuctionFields.classList.add('active');
+                }
+            });
+        });
+
+        document.getElementById('sellForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    try {
+        const response = await fetch('/sell', {
+            method: 'POST',
+            body: formData, // Send as multipart/form-data
+        });
+
+        if (response.ok) {
+            alert('Item listed successfully!');
+            window.location.href = '/dashboard';
+        } else {
+            const errorMessage = await response.text();
+            alert(`Error: ${errorMessage}`);
+        }
+    } catch (error) {
+        alert('An unexpected error occurred. Please try again.');
+    }
+});
+});
+</script>
+</html>

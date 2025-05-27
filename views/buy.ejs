@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy - TradeNShare</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Body Styling */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+/* Container */
+.container {
+    width: 80%;
+    max-width: 1100px;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Heading */
+h1 {
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    background-color: black;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    width: 70%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-bar button {
+    padding: 12px 20px;
+    background: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 0 5px 5px 0;
+    transition: 0.3s;
+}
+
+.search-bar button:hover {
+    background: #333;
+}
+
+/* Filter Container */
+.filter-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Space between filters */
+    margin-bottom: 20px;
+    flex-wrap: nowrap; /* Allow wrapping on smaller screens */
+}
+
+/* Filter Section */
+.filter {
+    display: flex;
+    align-items: center; /* Align label and dropdown vertically */
+    gap: 10px; /* Space between label and dropdown */
+}
+
+.filter label {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.filter select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    background: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.filter select:hover {
+    border-color: #333;
+}
+
+/* Sort Buttons */
+.sort-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.sort-buttons button {
+    padding: 12px 20px;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.sort-buttons button:hover {
+    background: #333;
+}
+
+/* Item List */
+.item-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Item Card */
+.item-card {
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    justify-content: space-between; /* Push button to the bottom */
+    border: 1px solid #ddd;
+    padding: 15px;
+    width: 100%; /* Ensure cards take full width of their container */
+    min-height: 300px; /* Ensure all cards are the same height */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: 0.3s;
+}
+
+.item-card:hover {
+    background: whitesmoke;
+    transform: scale(1.05);
+}
+
+/* Item Image */
+.item-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Item Title */
+.item-card h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/* Item Price */
+.item-card p {
+    font-size: 16px;
+    font-weight: 600;
+    color: black;
+}
+
+/* Buy Button */
+.item-card button {
+    padding: 10px;
+    width: 100%;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.item-card button:hover {
+    background: #333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .search-bar input {
+        width: 60%;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    .sort-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sort-buttons button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+</style>    
+<body>
+    <div class="container">
+        <h1>Buy Items</h1>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" id="searchQuery" placeholder="Search items...">
+            <button onclick="searchItems()">Search</button>
+        </div>
+
+        <div class="filter-container">
+            <div class="filter">
+                <label for="categoryFilter">Filter by Category:</label>
+                <select id="categoryFilter" onchange="applyAllFilters()">
+                    <option value="">All Categories</option>
+                    <!-- Users will be dynamically populated here -->
+                </select>
+            </div>
+
+            <div class="filter">
+                <label for="userFilter">Filter by User:</label>
+                <select id="userFilter" onchange="applyAllFilters()">
+                    <option value="">All Users</option>
+                    <!-- Users will be dynamically populated here -->
+                </select>
+            </div>
+        
+            <div class="filter">
+                <label for="statusFilter">Filter by status:</label>
+                <select id="statusFilter" onchange="applyAllFilters()">
+                    <option value="">All</option>
+                    <option value="Available">Available</option>
+                    <option value="Bidding">Bidding</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="sort-buttons">
+            <button id="sortByPrice" onclick="sortByPrice()">Sort by price</button>
+            <button id="sortByRatings" onclick="sortByRatings()">Sort by ratings</button>
+        </div>
+
+        <!-- Item Cards -->
+        <div class="item-list" id="itemList">
+            <!-- Item cards will be dynamically populated here -->
+        </div>
+    </div>
+
+    <script>
+    async function searchItems() {
+        const searchQuery = document.getElementById('searchQuery').value;
+
+        try {
+            const response = await fetch(`/buy/search?query=${searchQuery}`);
+            const items = await response.json();
+            
+            const usersResponse = await fetch('/user/');
+            allUsers = await usersResponse.json();
+        
+            // Populate the user dropdown
+            populateUserDropdown(allUsers);
+            populateCategoryDropdown(items);
+            renderItems(items);
+        } catch (error) {
+            console.error('Error fetching search results:', error);
+        }
+    }
+
+        // Populate the user dropdown
+    async function populateUserDropdown(users) {
+        const userFilter = document.getElementById('userFilter');
+        userFilter.innerHTML = '<option value="">All Users</option>';
+        
+        users.forEach(user => {
+            ratings= (user.ratings)? user.ratings+"/5": "No Ratings Yet";
+            userFilter.innerHTML += `<option value="${user.user_id}">${user.name+" with ratings "+ratings}</option>`;
+        });
+    }
+
+    async function populateCategoryDropdown(items) {
+        const categoryFilter = document.getElementById('categoryFilter');
+        categoryFilter.innerHTML = '<option value="">All Categories</option>';
+
+        new Set(items.map(item => item.category)).forEach(category => {
+            categoryFilter.innerHTML += `<option value="${category}">${category}</option>`;
+        });
+    }
+
+    async function applyAllFilters(skipRender = false) {
+        const searchQuery = document.getElementById('searchQuery').value;
+        const category = document.getElementById('categoryFilter').value;
+        const userId = document.getElementById('userFilter').value;
+        const status = document.getElementById('statusFilter').value;
+
+        try {
+            const response = await fetch(`/buy/search?query=${searchQuery}`);
+            let items = await response.json();
+
+            if (category) {
+                items = items.filter(item => item.category === category);
+            }
+            if (userId) {
+                items = items.filter(item => item.seller_id == userId);
+            }
+            if (status) {
+                items = items.filter(item => item.status === status);
+            }
+
+            if (!skipRender) {
+                renderItems(items);
+            }
+
+            return items;
+        } catch (error) {
+            console.error('Error applying filters:', error);
+            return [];
+        }
+    }
+
+    async function sortByPrice() {
+        const items = await applyAllFilters(true);
+        try {
+            items.sort((a, b) => {
+                const priceA = a.price ? parseFloat(a.price) : 0;
+                const priceB = b.price ? parseFloat(b.price) : 0;
+                return priceA - priceB;
+            });
+
+            renderItems(items);
+        } catch (error) {
+            console.error('Error sorting items by price:', error);
+        }
+    }
+
+    async function sortByRatings() {
+        const items = await applyAllFilters(true);
+        try {
+            // Get user ratings
+            const usersResponse = await fetch('/user/');
+            const users = await usersResponse.json();
+            const userRatingsMap = {};
+            users.forEach(user => {
+                userRatingsMap[user.user_id] = user.ratings;
+            });
+
+            // Sort by ratings
+            items.sort((a, b) => {
+                const ratingA = userRatingsMap[a.seller_id] || 0;
+                const ratingB = userRatingsMap[b.seller_id] || 0;
+                return ratingB - ratingA;
+            });
+
+            renderItems(items);
+        } catch (error) {
+            console.error('Error sorting items by ratings:', error);
+        }
+    }
+
+
+    function renderItems(items) {
+        const itemList = document.getElementById('itemList');
+        itemList.innerHTML = ''; // Clear previous results
+
+        if (items.length === 0) {
+            itemList.innerHTML = '<p>No items found.</p>';
+            return;
+        }
+
+        items.forEach(item => {
+            const itemCard = document.createElement('div');
+            itemCard.className = 'item-card';
+            itemCard.innerHTML = `
+                <h3>${item.name}</h3>
+                <p>${item.shortdescription}</p>
+                <p>Condition: ${item.item_condition}</p>
+                <p>Price: ${item.price || 'Free(since Donated)'}</p>
+                <p>Status: ${item.status}</p>
+                <p>Seller Rating: ${item.seller_rating || 'No ratings yet'}</p>
+                <br>
+                <button onclick="viewItemDetails(${item.item_id})">View Details</button>
+            `;
+            itemList.appendChild(itemCard);
+        });
+    }
+
+    function viewItemDetails(item_id) {
+        window.location.href = `/buy/item/${item_id}`;
+    }
+
+    async function buyNow(item_id) {
+        try {
+            const response = await fetch(`/buy/item/${item_id}/buy`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert(result.message); // Show success message
+                window.location.href = '/buy'; // Redirect to /buy
+            } else {
+                alert(result.message); // Show error message
+            }
+        } catch (error) {
+            console.error('Error purchasing item:', error);
+            alert('Failed to purchase item. Please try again.');
+        }
+    }
+
+    // Load items on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        searchItems();
+    });
+    </script>
+</body>
+</html>

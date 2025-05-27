@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review - TradeNShare</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        
+    }
+
+    h1 {
+        color: white;
+        font-size: 28px;
+        margin-bottom: 20px;
+        background-color: black;
+        padding: 10px;
+        border-radius: 5px;
+
+    }
+    
+    /* Container */
+    .container {
+        background: #ffffff;
+        width: 90%;
+        max-width: 500px;
+        min-height: 100vh;
+        padding: 25px;
+        
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Form Styling */
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        font-weight: 600;
+        color: #34495e;
+        margin-bottom: 5px;
+    }
+
+    input, 
+    textarea, 
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #bdc3c7;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        margin-bottom: 5px;
+    }
+
+    input:focus, 
+    textarea:focus, 
+    select:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0px 0px 5px rgba(52, 152, 219, 0.5);
+    }
+
+    /* Error Message Styling */
+    .error {
+        color: red;
+        font-size: 14px;
+    }
+
+    /* Select Dropdown Styling */
+    select {
+        cursor: pointer;
+    }
+
+    /* Button Styling */
+    button {
+        background: black;
+        color: #fff;
+        border: none;
+        padding: 12px 20px;
+        font-size: 18px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        transition: background 0.3s ease;
+    }
+
+    button:hover {
+        background: #333;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container {
+            width: 95%;
+            padding: 20px;
+        }
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h1>Leave a Review</h1>
+        <form id="reviewForm" action="/review" method="POST">
+            <!-- Reviewed User Email -->
+            <div class="form-group">
+                <label for="reviewedUserEmail">Reviewed User Email:</label>
+                <input type="email" id="reviewedUserEmail" name="reviewedUserEmail" required>
+                <small class="error" id="reviewedUserEmailError"></small>
+            </div>
+
+            <!-- Rating -->
+            <div class="form-group">
+                <label for="rating">Rating:</label>
+                <select id="rating" name="rating" required>
+                    <option value="1">★</option>
+                    <option value="2">★★</option>
+                    <option value="3">★★★</option>
+                    <option value="4">★★★★</option>
+                    <option value="5">★★★★★</option>
+                </select>
+            </div>
+
+            <!-- Comment -->
+            <div class="form-group">
+                <label for="comment">Comment:</label>
+                <textarea id="comment" name="comment" rows="4" required></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit">Submit Review</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('reviewForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+    
+            // Clear previous errors
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
+    
+            // Get form values
+            const reviewedUserEmail = document.getElementById('reviewedUserEmail').value;
+            const rating = document.getElementById('rating').value;
+            const comment = document.getElementById('comment').value;
+    
+            // Validate email format
+            if (!validateEmail(reviewedUserEmail)) {
+                alert('Invalid email format'); // Display error in alert
+                return;
+            }
+    
+            // Submit form data to the server
+            try {
+                const response = await fetch('/review', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        reviewedUserEmail,
+                        rating,
+                        comment,
+                    }),
+                });
+    
+                // Handle response
+                if (response.ok) {
+                    alert('Review submitted successfully!');
+                    window.location.reload(); // Refresh the page
+                } else {
+                    const errorMessage = await response.text(); // Get error message from the server
+                    alert(`Error: ${errorMessage}`); // Display transaction error in alert
+                }
+            } catch (error) {
+                alert('An unexpected error occurred. Please try again.'); // Handle network or other errors
+            }
+        });
+    
+        // Email validation
+        function validateEmail(email) {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+    </script>
+</body>
+</html>

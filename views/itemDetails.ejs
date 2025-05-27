@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Details - TradeNShare</title>
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/styles.css">
+
+</head>
+<style>
+    /* Import Google Font */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    
+    /* Reset Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    /* Body Styling */
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f4f4f4;
+        padding: 20px;
+    }
+    
+    /* Container */
+    .container {
+        width: 80%;
+        max-width: 900px;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+    
+    /* Heading */
+    h1 {
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    background-color: black;
+    padding: 10px;
+    }
+    
+    /* Section Titles */
+    h2 {
+        font-size: 22px;
+        font-weight: 600;
+        margin: 20px 0 10px;
+    }
+    
+    /* Details Sections */
+    .item-details, .seller-details, .auction-details, .details {
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 15px;
+        text-align: left;
+    }
+
+    .action-buttons button {
+    padding: 10px 20px;
+    background-color: black;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0;
+    }
+
+    .action-buttons button:hover{
+        background-color: #333;
+    }
+    
+    /* Paragraphs & Labels */
+    p {
+        font-size: 16px;
+        margin: 5px 0;
+    }
+    
+    strong {
+        color: black;
+        font-weight: 600;
+    }
+    
+    /* Input Field for Bidding */
+    input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        outline: none;
+    }
+    
+    /* Action Buttons */
+    .action-buttons, .seller-details button, form button {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    
+    button {
+        padding: 12px 20px;
+        background: black;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        border-radius: 5px;
+        transition: 0.3s;
+    }
+    
+    button:hover {
+        background: #333;
+    }
+
+    .item-image {
+    margin-bottom: 20px;
+    text-align: center;
+    }
+
+    .item-image img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container {
+            width: 100%;
+        }
+    }
+    </style>
+    
+<body>
+    <div class="container">
+        <div class="item-details">
+            <h2><%= item.name %></h2>
+            <!-- Add the image here -->
+            <% if (item.item_photo) { %>
+                <div class="item-image">
+                    <img src="/item/image/<%= item.item_id %>" alt="<%= item.name %>" style="max-width: 100%; height: auto; border-radius: 8px;">
+                </div>
+            <% } else { %>
+                <p>No image available</p>
+            <% } %>
+            <p><strong>Short Description:</strong> <%= item.shortdescription %></p>
+            <p><strong>Full Description:</strong> <%= item.description %></p>
+            <p><strong>Condition:</strong> <%= item.item_condition %></p>
+            <p><strong>Category:</strong> <%= item.category %></p>
+            <p><strong>Units:</strong> <%= item.units %></p>
+            <p><strong>Status:</strong> <%= item.status %></p>
+        </div>
+
+
+        <!-- Seller Details -->
+        <div class="seller-details">
+            <h2>Seller Details</h2>
+            <p><strong>Name:</strong> <%= seller.name %></p>
+            <p><strong>Email:</strong> <%= seller.email %></p>
+            <p><strong>Phone:</strong> <%= seller.phone %></p>
+            <p><strong>Address:</strong> <%= seller.address %></p>
+            <p><strong>Rating:</strong> <%= sellerRating %> / 5</p>
+            <button onclick="viewComments(<%= seller.user_id %>)">View Comments</button>
+        </div>
+
+        <% if (item.status === 'Bidding' && auctionDetails) { %>
+            <div class="auction-details">
+                <h2>Auction Details</h2>
+                <p><strong><%= auctionDetails.description%></strong></p>
+                <p><strong>Duration(in days):</strong> <%= auctionDetails.duration_days || "Permanent" %></p>
+                <p><strong>Start Date:</strong> <%= new Date(auctionDetails.start_date).toLocaleString() %></p>
+                <p><strong>End Date:</strong> <%= new Date(auctionDetails.end_date).toLocaleString() %></p>
+                <p><strong>Current Highest Bid:</strong> <%= auctionDetails.highest_bid || auctionDetails.base_price %></p>
+            </div>
+        <% } %> 
+        
+        <% if (item.status === 'Available' && Details) { %>
+            <div class="details">
+                <h2>Details</h2>
+                <p><strong><%= Details.description%></strong> </p>
+            </div>
+        <% } %> 
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <% if (item.status === 'Available') { %>
+                <button onclick="buyNow(<%= item.item_id %>)">Buy Now</button>
+            <% } else if (item.status === 'Bidding') { %>
+                <form id="bidForm" onsubmit="placeBid(event, <%= item.item_id %>)">
+                    <label for="bidAmount">Bid Amount:</label>
+                    <input type="number" id="bidAmount" name="bidAmount" step="0.01" required>
+                    <hr>
+                    <button type="submit">Place Bid</button>
+                </form>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+    async function buyNow(item_id) {
+        const response = await fetch(`/buy/item/${item_id}/buy`, {
+            method: 'POST',
+        });
+
+        if (response.ok) {
+            alert('Item purchased successfully');
+            window.location.reload(); // Refresh the page to update the item status
+        } else {
+            const errorMessage = await response.text();
+            alert(errorMessage); // Display the error message
+        }
+    }
+
+    async function placeBid(event, item_id) {
+        event.preventDefault();
+
+        const bidAmount = document.getElementById('bidAmount').value;
+
+        try {
+            const response = await fetch(`/buy/item/${item_id}/bid`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ bidAmount }),
+            });
+
+            if (response.ok) {
+                alert('Bid placed successfully');
+                window.location.reload(); 
+            } else {
+                const errorMessage = await response.text();
+                alert(errorMessage);
+            }
+        } catch (error) {
+            console.error('Error placing bid:', error);
+            alert('Failed to place bid. Please try again.');
+        }
+    }
+
+
+    async function requestDonation(item_id) {
+        const response = await fetch(`/buy/item/${item_id}/donate`, {
+            method: 'POST',
+        });
+
+        if (response.ok) {
+            alert('Donation request sent successfully');
+            window.location.reload(); // Refresh the page to update the item status
+        } else {
+            const errorMessage = await response.text();
+            alert(errorMessage); // Display the error message
+        }
+    }
+
+    async function requestToBorrow(item_id) {
+        const response = await fetch(`/buy/item/${item_id}/borrow`, {
+            method: 'POST',
+        });
+
+        if (response.ok) {
+            alert('Borrow request sent successfully');
+            window.location.reload(); // Refresh the page to update the item status
+        } else {
+            const errorMessage = await response.text();
+            alert(errorMessage); // Display the error message
+        }
+    }
+
+    function viewComments(user_id) {
+        window.location.href = `/user/comments/${user_id}`;
+    }
+    </script>
+</body>
+</html>
+

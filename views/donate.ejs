@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate - TradeNShare</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .container {
+        background: #ffffff;
+        width: 90%;
+        max-width: 600px;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    h1 {
+        color: white;
+        font-size: 28px;
+        margin-bottom: 20px;
+        background-color: black;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    /* Form Styling */
+    .form-group {
+        text-align: left;
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        font-weight: 600;
+        color: #34495e;
+        margin-bottom: 5px;
+    }
+
+    input, 
+    textarea, 
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #bdc3c7;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    input:focus, 
+    textarea:focus, 
+    select:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0px 0px 5px rgba(52, 152, 219, 0.5);
+    }
+
+    textarea {
+        resize: none;
+    }
+
+    /* Button Styling */
+    button {
+    background: black;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s ease;
+    }
+
+    button:hover {
+        background: #333;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container {
+            width: 95%;
+            padding: 20px;
+        }
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h1>Donate an Item</h1>
+        <form id="donateForm" action="/donate" method="POST" enctype="multipart/form-data">
+            <!-- Item Details -->
+            <div class="form-group">
+                <label for="name">Item Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="shortdescription">Short Description:</label>
+                <input type="text" id="shortdescription" name="shortdescription" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Full Description:</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="search_tags">Search Tags:</label>
+                <textarea id="search_tags" name="search_tags" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="descriptionOfTheSale">Description of the Sale:</label>
+                <textarea id="descriptionOfTheSale" name="descriptionOfTheSale" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="units">Units:</label>
+                <input type="number" id="units" name="units" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <input type="text" id="category" name="category" required>
+            </div>
+
+            <div class="form-group">
+                <label for="item_condition">Condition:</label>
+                <select id="item_condition" name="item_condition" required>
+                    <option value="New">New</option>
+                    <option value="Used">Used</option>
+                    <option value="Refurbished">Refurbished</option>
+                </select>
+            </div>
+            <input type="file" id="item_photo" name="item_photo" accept="image/*" required>
+            <hr>
+            <!-- Submit Button -->
+            <button type="submit">Donate Item</button>
+        </form>
+    </div>
+</body>
+
+<script>
+    document.getElementById('donateForm').addEventListener('submit', async function (e) {
+        e.preventDefault(); 
+
+        const formData = new FormData(this); 
+
+        try {
+            const response = await fetch('/donate', {
+                method: 'POST',
+                body: formData 
+            });
+
+            if (response.ok) {
+                alert('Item donated successfully!');
+                window.location.href = '/dashboard';
+            } else {
+                const errorMessage = await response.text(); 
+                alert(`Error: ${errorMessage}`);
+            }
+        } catch (error) {
+            alert('An unexpected error occurred. Please try again.');
+        }
+    });
+</script>
+</html>

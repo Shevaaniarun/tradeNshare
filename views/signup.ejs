@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <title>Signup - TradeNShare</title>
+    <style>
+        /* Import Google Font */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        /* Container */
+        .container {
+            display: flex;
+            width: 900px;
+            height: 600px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Signup Form Animation */
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Welcome Section Animation */
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Signup Form */
+        .form-box {
+            width: 60%;
+            padding: 40px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0; /* Hide initially */
+            animation: slideInLeft 1s ease-out 0.5s forwards; /* Slide in from the left */
+        }
+
+        .form-box h2 {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        /* Underline Effect Below Heading */
+        .form-box h2::after {
+            content: "";
+            width: 50px;
+            height: 3px;
+            background: black;
+            position: absolute;
+            left: 50%;
+            bottom: -5px;
+            transform: translateX(-50%);
+        }
+
+        /* Input Fields */
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            padding-left: 35px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        /* Submit Button */
+        button {
+            width: 100%;
+            padding: 12px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #333;
+        }
+
+        /* Login Link */
+        .form-box p {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .form-box p a {
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .form-box p a:hover {
+            text-decoration: underline;
+        }
+
+        /* Welcome Section */
+        .info-box {
+            width: 40%;
+            background: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            opacity: 0; /* Hide initially */
+            animation: slideInRight 1s ease-out forwards; /* Slide in from the right with delay */
+        }
+
+        .info-box h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+                width: 90%;
+            }
+
+            .info-box {
+                width: 100%;
+                padding: 30px;
+            }
+
+            .form-box {
+                width: 100%;
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Signup Form -->
+        <div class="form-box">
+            <h2>Sign Up</h2>
+            <form id="signupForm" action="/auth/signup" method="POST">
+                <div class="input-group">
+                    <input type="text" id="name" name="name" required placeholder="Full Name">
+                </div>
+                <div class="input-group">
+                    <input type="email" id="email" name="email" required placeholder="Email">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" required placeholder="Password">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm Password">
+                </div>
+                <div class="input-group">
+                    <input type="tel" id="phone" name="phone" required placeholder="Phone Number">
+                </div>
+                <div class="input-group">
+                    <input type="text" id="address" name="address" required placeholder="Address">
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
+
+            <p>Already have an account? <a href="/auth/login"><u>Login</u></a></p>
+        </div>
+
+        <!-- Welcome Section -->
+        <div class="info-box">
+            <h2>Join Us!</h2>
+            <p>Create an account to start trading and sharing effortlessly.</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Clear previous errors
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
+
+            // Get form values
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const phone = document.getElementById('phone').value;
+
+            // Validate email format
+            if (!validateEmail(email)) {
+                alert('Invalid email format'); // Display error in alert
+                return;
+            }
+
+            // Validate password strength
+            if (!validatePassword(password)) {
+                alert('Password must be at least 8 characters long'); // Display error in alert
+                return;
+            }
+
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match'); // Display error in alert
+                return;
+            }
+
+            // Validate phone number format
+            if (!validatePhone(phone)) {
+                alert('Invalid phone number format'); // Display error in alert
+                return;
+            }
+
+            // If all validations pass, submit the form
+            this.submit();
+        });
+
+        // Email validation
+        function validateEmail(email) {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+
+        // Password strength validation
+        function validatePassword(password) {
+            return password.length >= 8;
+        }
+
+        // Phone number validation
+        function validatePhone(phone) {
+            const regex = /^\d{10}$/; // Assumes 10-digit phone numbers
+            return regex.test(phone);
+        }
+    </script>
+</body>
+</html>

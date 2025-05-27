@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - TradeNShare</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+    /* General Styles */
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      background: white;
+      padding: 20px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+    }
+
+    .site-header {
+      background: #000;
+      color: #fff;
+      padding: 20px ;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+
+  .site-header h1 {
+      margin: 0;
+      font-size: 36px;
+      letter-spacing: 2px;
+      font-family: 'Poppins', sans-serif;
+      color:rgb(204, 201, 201);
+  }
+
+  .site-header p {
+      margin: 5px 0 0 0;
+      font-size: 18px;
+      font-family: 'Poppins', sans-serif;
+      opacity: 0.8;
+      color: #555;
+  }
+
+
+    h1,h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    /* Header Section */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .welcome-message {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+    }
+
+    .profile-btn-container {
+      position: relative;
+    }
+
+    .profile-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 36px;
+      color: #333;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+
+    .profile-btn:hover {
+      transform: scale(1.1);
+      background-color: white;
+    }
+
+    /* Profile Section */
+    .profile-section {
+      position: absolute;
+      right: 0;
+      top: 50px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+      width: 250px;
+      display: none;
+      z-index: 100;
+    }
+
+    .profile-section.active {
+      display: block;
+      animation: fadeIn 0.3s;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .profile-section h2 {
+      font-size: 18px;
+      margin-top: 0;
+      margin-bottom: 15px;
+      text-align: left;
+      color: #444;
+    }
+
+    .profile-section p {
+      font-size: 14px;
+      margin: 8px 0;
+      color: #555;
+      line-height: 1.4;
+    }
+
+    .profile-section p strong {
+      color: #333;
+      font-weight: 500;
+    }
+
+    /* Grid Navigation */
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .grid-item {
+      background: black;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .grid-item:hover {
+      background: #555;
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .grid-item h3 {
+      margin: 10px 0;
+    }
+
+    button {
+      background: black;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      width:100%;
+    }
+
+    /* Activity Feed */
+    .activity-feed {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .activity-feed h2 {
+      font-size: 20px;
+      border-bottom: 2px solid black;
+      padding-bottom: 5px;
+      color: #333;
+    }
+
+    .activity-feed ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .activity-feed ul li {
+      background: white;
+      padding: 10px;
+      border-radius: 6px;
+      margin: 5px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .activity-feed ul li strong {
+      color: #333;
+    }
+
+    .activity-feed ul li button {
+      background: black;
+      border: none;
+      padding: 7px 12px;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 50%;
+    }
+
+    .activity-feed ul li button:hover {
+      background: #555;
+    }
+
+    /* Details Section */
+    .details-section {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      display: none;
+      text-align: center;
+      z-index: 1000;
+    }
+
+    .details-section p {
+      font-size: 16px;
+      color: #555;
+    }
+
+    .details-section button {
+      background: black;
+      border: none;
+      padding: 10px 15px;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    .details-section button:hover {
+      background: #555;
+    }
+
+    /* Logout Button */
+    button[onclick="logout()"] {
+      width: 100%;
+      padding: 10px;
+      background-color: black;
+      color: white;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .li-items {
+      width: 60%;
+    }
+
+    .li-details {
+      width: 60%;
+    }
+
+    button:hover {
+      background: #555;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+
+      .details-section {
+        width: 95%;
+      }
+    }
+  </style>
+
+  <body>
+    <div class="container">
+      <header class="site-header">
+        <img src="images/favicon.png">
+        <h1>TradeNShare</h1>
+        <p>The World of Trading and Sharing</p>
+      </header>    
+      <div class="header">
+        <h1 class="welcome-message">Welcome back, <%= user.name %>!</h1>
+        <div class="profile-btn-container">
+          <button class="profile-btn" onclick="toggleProfile()">
+            <span class="material-icons">account_circle</span>
+          </button>
+          <!-- Profile Section -->
+          <div class="profile-section" id="profileSection">
+            <h2>Your Profile</h2>
+            <p><strong>Name:</strong> <%= user.name %></p>
+            <p><strong>Email:</strong> <%= user.email %></p>
+            <p><strong>Phone:</strong> <%= user.phone || 'Not provided' %></p>
+            <p>
+              <strong>Address:</strong> <%= user.address || 'Not provided' %>
+            </p>
+            <button id="toggleBtn">View History</button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Navigation Options (Grid View) -->
+      <div class="grid-container" style="margin-bottom: 60px">
+        <div class="grid-item" onclick="location.href='/buy'">
+          <h3>Buy</h3>
+          <p>Explore items to buy.</p>
+        </div>
+        <div class="grid-item" onclick="location.href='/sell'">
+          <h3>Sell</h3>
+          <p>List items for sale.</p>
+        </div>
+        <div class="grid-item" onclick="location.href='/donate'">
+          <h3>Donate</h3>
+          <p>Donate items to others.</p>
+        </div>
+        <div class="grid-item" onclick="location.href='/review'">
+          <h3>Review</h3>
+          <p>Rate and review users.</p>
+        </div>
+      </div> 
+
+      <!-- Purchase History -->
+      <div class="activity-feed">
+        <h2>Purchase History</h2>
+        <ul>
+          <% purchaseHistory.forEach(purchase => { %>
+          <li>
+            <span class="li-items"
+              ><strong><%= purchase.item_name %></strong></span
+            ><span class="li-details"
+              >Purchased on <%= purchase.purchase_date.toLocaleDateString()
+              %></span
+            >
+            <button
+              onclick="showPurchaseDetails(<%= JSON.stringify(purchase.item_name) %>, <%= JSON.stringify(purchase.item_description) %>, <%= JSON.stringify(purchase.item_condition) %>, <%= JSON.stringify(purchase.purchase_price) %>, <%= JSON.stringify(purchase.seller_name) %>, <%= JSON.stringify(purchase.seller_email) %>, <%= JSON.stringify(purchase.seller_phonenum) %>, <%= JSON.stringify(purchase.seller_address) %>)"
+            >
+              View Details
+            </button>
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+
+      <!-- Sale History -->
+      <div class="activity-feed">
+        <h2>Sale History</h2>
+        <ul>
+          <% saleHistory.forEach(sale => { %>
+          <li>
+            <span class="li-items"><strong><%= sale.item_name %></strong></span>
+            <span class="li-details"
+              >Sold on <%= sale.sale_date.toLocaleDateString() %></span
+            >
+            <button
+              onclick="showSaleDetails(<%= JSON.stringify(sale.item_name) %>, <%= JSON.stringify(sale.item_description) %>, <%= JSON.stringify(sale.item_condition) %>, <%= JSON.stringify(sale.sale_price) %>, <%= JSON.stringify(sale.buyer_name || 'Not yet sold') %>, <%= JSON.stringify(sale.buyer_email || 'N/A') %>, <%= JSON.stringify(sale.buyer_phonenum || 'N/A') %>, <%= JSON.stringify(sale.buyer_address || 'N/A') %>)"
+            >
+              View Details
+            </button>
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+
+      <!-- Bidding History -->
+      <div class="activity-feed">
+        <h2>Bidding History</h2>
+        <ul>
+          <% biddingHistory.forEach(bid => { %>
+          <li>
+            <span class="li-items"><strong><%= bid.item_name %></strong></span>
+            <span class="li-details"
+              >Bid Amount: <%= bid.bid_amount %> on <%=
+              bid.bid_time.toLocaleDateString() %></span
+            >
+            <button
+              onclick="showBiddingDetails(<%= JSON.stringify(bid.item_name) %>, <%= JSON.stringify(bid.item_description) %>, <%= JSON.stringify(bid.item_condition) %>, <%= JSON.stringify(bid.base_price) %>, <%= JSON.stringify(bid.start_date.toLocaleDateString()) %>, <%= JSON.stringify(bid.end_date.toLocaleDateString()) %>, <%= JSON.stringify(bid.auctioneer_name) %>, <%= JSON.stringify(bid.auctioneer_email) %>, <%= JSON.stringify(bid.auctioneer_phonenum) %>, <%= JSON.stringify(bid.auctioneer_address) %>)"
+            >
+              View Details
+            </button>
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+
+      <!-- Auction History -->
+      <div class="activity-feed">
+        <h2>Auction History</h2>
+        <ul>
+          <% auctionHistory.forEach(auction => { %>
+          <li>
+            <span class="li-items"
+              ><strong><%= auction.item_name %></strong></span
+            ><span class="li-details"
+              >Base Price: <%= auction.base_price %> (End on <%=
+              auction.end_date.toLocaleDateString() %>)</span
+            >
+            <button
+              onclick="showAuctionDetails(<%= JSON.stringify(auction.item_name) %>, <%= JSON.stringify(auction.item_description) %>, <%= JSON.stringify(auction.item_condition) %>, <%= JSON.stringify(auction.base_price) %>, <%= JSON.stringify(auction.highest_bidder_name) %>, <%= JSON.stringify(auction.highest_bidder_email) %>, <%= JSON.stringify(auction.highest_bidder_phonenum) %>, <%= JSON.stringify(auction.highest_bidder_address) %>)"
+            >
+              View Details
+            </button>
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+
+      <!-- Lending History -->
+      <div class="activity-feed">
+        <h2>Lending History</h2>
+        <ul>
+          <% lendingHistory.forEach(lending => { %>
+          <li>
+            <span class="li-items"
+              ><strong><%= lending.item_name %></strong></span
+            >
+            <span class="li-details"
+              ><%= lending.borrower_name ? `Borrowed by
+              ${lending.borrower_name}` : `Lended by ${lending.lender_name}` %>
+              on <%= lending.lending_date.toLocaleDateString() %></span
+            >
+            <button
+              onclick="showLendingDetails(<%= JSON.stringify(lending.item_name) %>, <%= JSON.stringify(lending.item_description) %>, <%= JSON.stringify(lending.item_condition) %>, <%= JSON.stringify(lending.price) %>, <%= JSON.stringify(lending.duration_days) %>, <%= JSON.stringify(lending.borrower_name) %>, <%= JSON.stringify(lending.borrower_email) %>, <%= JSON.stringify(lending.borrower_phonenum) %>, <%= JSON.stringify(lending.borrower_address) %>)"
+            >
+              View Details
+            </button>
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+
+      <!-- Lending Borrower History -->
+      <div class="activity-feed">
+        <h2>Borrowing History</h2>
+        <ul>
+          <% lendingBorrowingHistory.forEach(lending => { %>
+          <li>
+            <span class="li-items"
+              ><strong><%= lending.item_name %></strong></span
+            >
+            <span class="li-details"
+              >Borrowed from <%= lending.lender_name %> on <%=
+              lending.lending_date.toLocaleDateString() %></span
+            >
+            <button
+              onclick="showLendingBorrowingDetails(<%= JSON.stringify(lending.item_name) %>, <%= JSON.stringify(lending.item_description) %>, <%= JSON.stringify(lending.item_condition) %>, <%= JSON.stringify(lending.price) %>, <%= JSON.stringify(lending.duration_days) %>, <%= JSON.stringify(lending.lender_name) %>, <%= JSON.stringify(lending.lender_email) %>, <%= JSON.stringify(lending.lender_phonenum) %>, <%= JSON.stringify(lending.lender_address) %>)"
+            >
+              View Details
+            </button>
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+      <!-- Donation History -->
+      <div class="activity-feed">
+        <h2>Donation History</h2>
+        <ul>
+          <% donationHistory.forEach(donation => { %>
+          <li>
+            <span class="li-items"
+              ><strong><%= donation.item_name %></strong></span
+            ><span class="li-details"
+              >Donated on <%= donation.donation_date.toLocaleDateString()
+              %></span
+            >
+            <button
+              onclick="showDonationDetails(<%= JSON.stringify(donation.item_name) %>, <%= JSON.stringify(donation.item_description) %>, <%= JSON.stringify(donation.item_condition) %>,<%= JSON.stringify(donation.donation_date.toLocaleDateString()) %>, <%= JSON.stringify(donation.receiver_name || 'Not yet received') %>, <%= JSON.stringify(donation.receiver_email || 'N/A') %>, <%= JSON.stringify(donation.receiver_phonenum || 'N/A') %>, <%= JSON.stringify(donation.receiver_address || 'N/A') %>)"
+            >
+              View Details
+            </button>
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+
+      <!-- Received Donation History -->
+      <div class="activity-feed">
+        <h2>Received Donation History</h2>
+        <ul>
+          <% receivedDonationHistory.forEach(donation => { %>
+          <li>
+            <span class="li-items"
+              ><strong><%= donation.item_name %></strong></span
+            >
+            <span class="li-details"
+              >Received on <%= donation.donation_date.toLocaleDateString()
+              %></span
+            >
+            <button
+              onclick="showReceivedDonationDetails(<%= JSON.stringify(donation.item_name) %>, <%= JSON.stringify(donation.item_description) %>, <%= JSON.stringify(donation.item_condition) %>, <%= JSON.stringify(donation.donation_date.toLocaleDateString()) %>, <%= JSON.stringify(donation.donor_name) %>, <%= JSON.stringify(donation.donor_email) %>, <%= JSON.stringify(donation.donor_phonenum) %>, <%= JSON.stringify(donation.donor_address) %>)"
+            >
+              View Details
+            </button>
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+
+      <!-- Lending Auction History -->
+      <div class="activity-feed">
+        <h2>Lending Auction History</h2>
+        <ul>
+          <% lendingAuctionHistory.forEach(lendingAuction => { %>
+          <li>
+            <span class="li-items"
+              ><strong><%= lendingAuction.item_name %></strong></span
+            >
+            <span class="li-details"
+              >Base Price: <%= lendingAuction.base_price %> (End on <%=
+              lendingAuction.end_date.toLocaleDateString() %>)</span
+            >
+            <button
+              onclick="showLendingAuctionDetails(<%= JSON.stringify(lendingAuction.item_name) %>, <%= JSON.stringify(lendingAuction.item_description) %>, <%= JSON.stringify(lendingAuction.item_condition) %>, <%= JSON.stringify(lendingAuction.base_price) %>, <%= JSON.stringify(lendingAuction.highest_bid) %>, <%= JSON.stringify(lendingAuction.highest_bidder_name) %>, <%= JSON.stringify(lendingAuction.highest_bidder_email) %>, <%= JSON.stringify(lendingAuction.highest_bidder_phonenum) %>, <%= JSON.stringify(lendingAuction.highest_bidder_address) %>)"
+            >
+              View Details
+            </button>
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+
+      <!-- Lending Bidding History -->
+      <div class="activity-feed">
+        <h2>Borrowing Bidding History</h2>
+        <ul>
+          <% lendingBiddingHistory.forEach(lendingBid => { %>
+          <li>
+            <span class="li-items"
+              ><strong><%= lendingBid.item_name %></strong></span
+            >
+            <span class="li-details"
+              >Bid Amount: <%= lendingBid.bid_amount %> on <%=
+              lendingBid.bid_time.toLocaleDateString() %></span
+            >
+            <button
+              onclick="showLendingBiddingDetails(<%= JSON.stringify(lendingBid.item_name) %>, <%= JSON.stringify(lendingBid.item_description) %>, <%= JSON.stringify(lendingBid.item_condition) %>, <%= JSON.stringify(lendingBid.base_price) %>,<%= JSON.stringify(lendingBid.start_date.toLocaleDateString()) %>, <%= JSON.stringify(lendingBid.end_date.toLocaleDateString()) %>, <%= JSON.stringify(lendingBid.lender_name) %>, <%= JSON.stringify(lendingBid.lender_email) %>, <%= JSON.stringify(lendingBid.lender_phonenum) %>, <%= JSON.stringify(lendingBid.lender_address) %>)"
+            >
+              View Details
+            </button>
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+
+      <!-- Dynamic Details Section -->
+      <div id="detailsSection" class="details-section" style="display: none">
+        <h2 id="detailsTitle">Details</h2>
+        <div id="detailsContent"></div>
+        <button onclick="hideDetails()">OK</button>
+      </div>
+
+      <!-- Logout Button -->
+      <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+      // Toggle profile section
+      function toggleProfile() {
+        document.getElementById("profileSection").classList.toggle("active");
+      }
+
+      // Close profile when clicking outside
+      document.addEventListener("click", () => {
+        const profileSection = document.getElementById("profileSection");
+        const profileBtn = document.querySelector(".profile-btn");
+
+        if (
+          !profileSection.contains(event.target) &&
+          !profileBtn.contains(event.target)
+        ) {
+          profileSection.classList.remove("active");
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const toggleBtn = document.getElementById("toggleBtn");
+        const details = document.querySelectorAll(".activity-feed");
+        let isTrue = false;
+
+        toggleBtn.addEventListener("click", () => {
+          isTrue = !isTrue;
+
+          details.forEach((item) => {
+            item.style.display = isTrue ? "block" : "none";
+          });
+
+          toggleBtn.textContent = isTrue ? "Hide History" : "View History";
+        });
+      });
+
+      // Function to display purchase details dynamically
+      function showPurchaseDetails(
+        itemName,
+        itemDescription,
+        itemCondition,
+        purchasePrice,
+        sellerName,
+        sellerEmail,
+        sellerPhonenum,
+        sellerAddress
+      ) {
+        const detailsContent = `
+                  <p><strong>Item Name:</strong> ${itemName}</p>
+                  <p><strong>Description:</strong> ${itemDescription}</p>
+                  <p><strong>Condition:</strong> ${itemCondition}</p>
+                  <p><strong>Price:</strong> ${purchasePrice}</p>
+                  <p><strong>Seller:</strong> ${sellerName}</p>
+                  <p><strong>Seller Email:</strong> ${sellerEmail}</p>
+                  <p><strong>Seller Phone Number:</strong> ${sellerPhonenum}</p>
+                  <p><strong>Seller Address:</strong> ${sellerAddress}</p>
+              `;
+        document.getElementById("detailsContent").innerHTML = detailsContent;
+        document.getElementById("detailsSection").style.display = "block";
+      }
+
+      // Function to display sale details dynamically
+      function showSaleDetails(
+        itemName,
+        itemDescription,
+        itemCondition,
+        salePrice,
+        buyerName,
+        buyerEmail,
+        buyerPhonenum,
+        buyerAddress
+      ) {
+        const detailsContent = `
+                  <p><strong>Item Name:</strong> ${itemName}</p>
+                  <p><strong>Description:</strong> ${itemDescription}</p>
+                  <p><strong>Condition:</strong> ${itemCondition}</p>
+                  <p><strong>Price:</strong> ${salePrice}</p>
+                  <p><strong>Buyer:</strong> ${buyerName}</p>
+                  <p><strong>Buyer Email:</strong> ${buyerEmail}</p>
+                  <p><strong>Buyer Phone Number:</strong> ${buyerPhonenum}</p>
+                  <p><strong>Buyer Address:</strong> ${buyerAddress}</p>
+              `;
+        document.getElementById("detailsContent").innerHTML = detailsContent;
+        document.getElementById("detailsSection").style.display = "block";
+      }
+
+      // Function to display bidding details dynamically
+      function showBiddingDetails(
+        itemName,
+        itemDescription,
+        itemCondition,
+        base_price,
+        start_date,
+        end_date,
+        auctioneerName,
+        auctioneerEmail,
+        auctioneerPhonenum,
+        auctioneerAddress
+      ) {
+        const detailsContent = `
+                  <p><strong>Item Name:</strong> ${itemName}</p>
+                  <p><strong>Description:</strong> ${itemDescription}</p>
+                  <p><strong>Condition:</strong> ${itemCondition}</p>
+                  <p><strong>Base Price:</strong> ${base_price}</p>
+                  <p><strong>Auction Start Date:</strong> ${start_date}</p>
+                  <p><strong>Auction End Date</strong> ${end_date}</p>
+                  <p><strong>Auctioneer:</strong> ${auctioneerName} </p>
+                  <p><strong>Auctioneer Email:</strong> ${auctioneerEmail}</p>
+                  <p><strong>Auctioneer Phone Number:</strong> ${auctioneerPhonenum}</p>
+                  <p><strong>Auctioneer Address:</strong> ${auctioneerAddress}</p>
+              `;
+        document.getElementById("detailsContent").innerHTML = detailsContent;
+        document.getElementById("detailsSection").style.display = "block";
+      }
+
+      // Function to display auction details dynamically
+      function showAuctionDetails(
+        itemName,
+        itemDescription,
+        itemCondition,
+        basePrice,
+        highestBidderName,
+        highestBidderEmail,
+        highestBidderPhonenum,
+        highestBidderAddress
+      ) {
+        const detailsContent = `
+                  <p><strong>Item Name:</strong> ${itemName}</p>
+                  <p><strong>Description:</strong> ${itemDescription}</p>
+                  <p><strong>Condition:</strong> ${itemCondition}</p>
+                  <p><strong>Base Price:</strong> ${basePrice}</p>
+                  <p><strong>Highest Bidder:</strong> ${
+                    highestBidderName || "No bids yet"
+                  }</p>
+                  <p><strong>Highest Bidder Email:</strong> ${
+                    highestBidderEmail || "N/A"
+                  }</p>
+                  <p><strong>Highest Bidder Phone Number:</strong> ${
+                    highestBidderPhonenum || "N/A"
+                  }</p>
+                  <p><strong>Highest Bidder Address:</strong> ${
+                    highestBidderAddress || "N/A"
+                  }</p>
+              `;
+        document.getElementById("detailsContent").innerHTML = detailsContent;
+        document.getElementById("detailsSection").style.display = "block";
+      }
+
+      // Function to display lending auction details dynamically
+      function showLendingAuctionDetails(
+        itemName,
+        itemDescription,
+        itemCondition,
+        basePrice,
+        highestBid,
+        highestBidderName,
+        highestBidderEmail,
+        highestBidderPhonenum,
+        highestBidderAddress
+      ) {
+        const detailsContent = `
+                  <p><strong>Item Name:</strong> ${itemName}</p>
+                  <p><strong>Description:</strong> ${itemDescription}</p>
+                  <p><strong>Condition:</strong> ${itemCondition}</p>
+                  <p><strong>Base Price:</strong> ${basePrice}</p>
+                  <p><strong>Highest Bid:</strong> ${highestBid}</p>
+                  <p><strong>Highest Bidder:</strong> ${
+                    highestBidderName || "No bids yet"
+                  } </p>
+                  <p><strong>Highest Bidder Email:</strong> ${
+                    highestBidderEmail || "N/A"
+                  }</p>
+                  <p><strong>Highest Bidder Phone Number:</strong> ${
+                    highestBidderPhonenum || "N/A"
+                  }</p>
+                  <p><strong>Highest Bidder Address:</strong> ${
+                    highestBidderAddress || "N/A"
+                  }</p>
+              `;
+        document.getElementById("detailsContent").innerHTML = detailsContent;
+        document.getElementById("detailsSection").style.display = "block";
+      }
+
+      // Function to display lending bidding details dynamically
+      function showLendingBiddingDetails(
+        itemName,
+        itemDescription,
+        itemCondition,
+        base_price,
+        start_date,
+        end_date,
+        lenderName,
+        lenderEmail,
+        lenderPhonenum,
+        lenderAddress
+      ) {
+        const detailsContent = `
+                  <p><strong>Item Name:</strong> ${itemName}</p>
+                  <p><strong>Description:</strong> ${itemDescription}</p>
+                  <p><strong>Condition:</strong> ${itemCondition}</p>
+                  <p><strong>Base Price:</strong> ${base_price}</p>
+                  <p><strong>Auction Start Date:</strong> ${start_date}</p>
+                  <p><strong>Auction End Date</strong> ${end_date}</p>
+                  <p><strong>Lender:</strong> ${lenderName}</p>
+                  <p><strong>Lender Email:</strong> ${lenderEmail}</p>
+                  <p><strong>Lender Phone Number:</strong> ${lenderPhonenum}</p>
+                  <p><strong>Lender Address:</strong> ${lenderAddress}</p>
+              `;
+        document.getElementById("detailsContent").innerHTML = detailsContent;
+        document.getElementById("detailsSection").style.display = "block";
+      }
+
+      // Function to display lending details dynamically
+      function showLendingDetails(
+        itemName,
+        itemDescription,
+        itemCondition,
+        basePrice,
+        durationDays,
+        borrowerName,
+        borrowerEmail,
+        borrowerPhonenum,
+        borrowerAddress
+      ) {
+        const detailsContent = `
+                  <p><strong>Item Name:</strong> ${itemName}</p>
+                  <p><strong>Description:</strong> ${itemDescription}</p>
+                  <p><strong>Condition:</strong> ${itemCondition}</p>
+                  <p><strong>Base Price:</strong> ${basePrice}</p>
+                  <p><strong>Duration:</strong> ${durationDays} days</p>
+                  <p><strong>Borrower:</strong> ${borrowerName} </p>
+                  <p><strong>Borrower Email:</strong> ${borrowerEmail}</p>
+                  <p><strong>Borrower Phone Number:</strong> ${borrowerPhonenum}</p>
+                  <p><strong>Borrower Address:</strong> ${borrowerAddress}</p>
+              `;
+        document.getElementById("detailsContent").innerHTML = detailsContent;
+        document.getElementById("detailsSection").style.display = "block";
+      }
+
+      // Function to display lending borrower details dynamically
+      function showLendingBorrowingDetails(
+        itemName,
+        itemDescription,
+        itemCondition,
+        price,
+        durationDays,
+        lenderName,
+        lenderEmail,
+        lenderPhonenum,
+        lenderAddress
+      ) {
+        const detailsContent = `
+                  <p><strong>Item Name:</strong> ${itemName}</p>
+                  <p><strong>Description:</strong> ${itemDescription}</p>
+                  <p><strong>Condition:</strong> ${itemCondition}</p>
+                  <p><strong>Price:</strong> ${price}</p>
+                  <p><strong>Duration:</strong> ${durationDays} days</p>
+                  <p><strong>Lender:</strong> ${lenderName}</p>
+                  <p><strong>Lender Email:</strong> ${lenderEmail}</p>
+                  <p><strong>Lender Phone Number:</strong> ${lenderPhonenum}</p>
+                  <p><strong>Lender Address:</strong> ${lenderAddress}</p>
+              `;
+        document.getElementById("detailsContent").innerHTML = detailsContent;
+        document.getElementById("detailsSection").style.display = "block";
+      }
+
+      // Function to display donation details dynamically
+      function showDonationDetails(
+        itemName,
+        itemDescription,
+        itemCondition,
+        donationDate,
+        receiverName,
+        receiverEmail,
+        receiverPhonenum,
+        receiverAddress
+      ) {
+        const detailsContent = `
+                  <p><strong>Item Name:</strong> ${itemName}</p>
+                  <p><strong>Description:</strong> ${itemDescription}</p>
+                  <p><strong>Condition:</strong> ${itemCondition}</p>
+                  <p><strong>Donation Date:</strong> ${donationDate}</p>
+                  <p><strong>Receiver:</strong> ${receiverName} </p>
+                  <p><strong>Receiver Email:</strong> ${receiverEmail}</p>
+                  <p><strong>Receiver Phone Number:</strong> ${receiverPhonenum}</p>
+                  <p><strong>Receiver Address:</strong> ${receiverAddress}</p>
+
+              `;
+        document.getElementById("detailsContent").innerHTML = detailsContent;
+        document.getElementById("detailsSection").style.display = "block";
+      }
+
+      // Function to display received donation details dynamically
+      function showReceivedDonationDetails(
+        itemName,
+        itemDescription,
+        itemCondition,
+        donationDate,
+        donorName,
+        donorEmail,
+        donorPhonenum,
+        donorAddress
+      ) {
+        const detailsContent = `
+                  <p><strong>Item Name:</strong> ${itemName}</p>
+                  <p><strong>Description:</strong> ${itemDescription}</p>
+                  <p><strong>Condition:</strong> ${itemCondition}</p>
+                  <p><strong>Donation Date:</strong> ${donationDate}</p>
+                  <p><strong>Donor:</strong> ${donorName} (${donorEmail})</p>
+                  <p><strong>Donor Email:</strong> ${donorEmail}</p>
+                  <p><strong>Donor Phone Number:</strong> ${donorPhonenum}</p>
+                  <p><strong>Donor Address:</strong> ${donorAddress}</p>
+              `;
+        document.getElementById("detailsContent").innerHTML = detailsContent;
+        document.getElementById("detailsSection").style.display = "block";
+      }
+
+      // Function to hide the details section
+      function hideDetails() {
+        document.getElementById("detailsSection").style.display = "none";
+      }
+
+      // Logout function
+      function logout() {
+        fetch("/auth/logout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              window.location.href = "/auth/login"; // Redirect to login page after logout
+            } else {
+              alert("Logout failed. Please try again.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    </script>
+  </body>
+</html>
