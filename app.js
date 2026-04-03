@@ -42,7 +42,35 @@ app.use('/buy', buyRoutes);
 app.use('/user', userRoutes);
 app.use('/item', itemRoutes);
 
+{
+  "name": "tradenshare",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+
+  "dependencies": {
+  "ejs": "^3.1.9",
+  "express": "^4.18.2",
+  "body-parser": "^1.20.2",
+  "mysql2": "^3.6.5",
+  "bcryptjs": "^2.4.3",
+  "express-session": "^1.17.3"
+  }
+}
+
+
 // Start the server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server is running on http://0.0.0.0:${PORT}`);
 });
